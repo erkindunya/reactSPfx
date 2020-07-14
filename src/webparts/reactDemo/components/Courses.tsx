@@ -3,6 +3,7 @@ import styles from './ReactDemo.module.scss';
 
 import { CourseProvider } from "../../../services/CourseProvider";
 import { ICourse } from "../../../common/ICourse";
+import Course from "./Course";
 
 export interface ICoursesProps {
   context: any;
@@ -46,16 +47,16 @@ export default class Courses extends React.Component<ICoursesProps, ICoursesStat
         <div className={styles.container}>
           <span className={styles.title}>Courses</span>
           <p className={styles.subTitle}>List of Courses</p>
+          <input type="button" value="Delete" onClick={() => {
+            let items: ICourse[] = [...this.state.data];
+            items.slice();
+            this.setState({
+              data: items
+            });
+          }} />
           <div className={styles.row}>
             {
-              this.state.data.map((c: ICourse) => <div className={styles.column}>
-                {c.CourseID} : {c.Title} <br />
-                {c.Category} <br />
-                {c.Description} <br />
-                {c.Technology} <br />
-                {c.Duration} Hrs <br />
-                {c.Duration} $
-              </div>)
+              this.state.data.map((c: ICourse) => <Course item={c} />)
             }
           </div>
         </div>
