@@ -10,6 +10,13 @@ export interface ICoursesProps {
 
 interface ICoursesState {
   data: ICourse[];
+  mode: FormMode;
+}
+
+enum FormMode {
+  ViewAll,
+  New,
+  Edit
 }
 
 export default class Courses extends React.Component<ICoursesProps, ICoursesState> {
@@ -20,7 +27,8 @@ export default class Courses extends React.Component<ICoursesProps, ICoursesStat
 
     // Create the State
     this.state = {
-      data: []
+      data: [],
+      mode: FormMode.ViewAll as FormMode
     };
 
     this.provider = new CourseProvider("Courses", props.context);
@@ -44,37 +52,55 @@ export default class Courses extends React.Component<ICoursesProps, ICoursesStat
     return (
       <div className={styles.reactDemo}>
         <div className={styles.container}>
-          <span className={styles.title}>Courses</span>
-          <p className={styles.subTitle}>List of Courses</p>
-          <input type="button" value=" Delete " onClick={() => {
-            let items: ICourse[] = [...this.state.data];
-
-            items.slice();
-
-            this.setState({
-              data: items
-            });
-
-          }} />
           <div className={styles.row}>
             <div className={styles.column}>
-              <table>
-                <tr>
-                  <td>ID</td>
-                  <td>Name</td>
-                  <td>Category</td>
-                  <td>Hrs</td>
-                  <td>Price</td>
-                </tr>
-                {
-                  this.state.data.map((c: ICourse) => this.getCourseRow(c))
-                }
-              </table>
+              <span className={styles.title}>Courses</span>
+              <p className={styles.subTitle}>List of Courses</p>
+              {
+                this.state.mode == FormMode.ViewAll && <input type="button" value="Add..." onClick={() => {
+                  this.setState({
+                    mode: FormMode.New as FormMode
+                  });
+                }} />
+
+              }
+
+              {this.state.mode == FormMode.ViewAll && this.getCoursesTable()}
+
+              {
+                this.state.mode == FormMode.New && <div>
+                  <h2>Add Form</h2>
+                  <p>TBd - New Form Comes here</p>
+                  <input type="button" value=" Save " />&nbsp;
+                                                  <input type="button" value=" Cancel " onClick={() => {
+                    this.setState({
+                      mode: FormMode.ViewAll as FormMode
+                    });
+                  }} />
+
+                </div>
+              }
+
             </div>
           </div>
         </div>
       </div>
     );
+  }
+
+  private getCoursesTable() {
+    return <table>
+      <tr>
+        <td>ID</td>
+        <td>Name</td>
+        <td>Category</td>
+        <td>Hrs</td>
+        <td>Price</td>
+      </tr>
+      {
+        this.state.data.map((c: ICourse) => this.getCourseRow(c))
+      }
+    </table>;
   }
 
   private getCourseRow(c: ICourse) {
