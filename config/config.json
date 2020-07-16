@@ -9,10 +9,19 @@
           "manifest": "./src/webparts/reactDemo/ReactDemoWebPart.manifest.json"
         }
       ]
+    },
+    "qoutes-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/qoutes/QoutesWebPart.js",
+          "manifest": "./src/webparts/qoutes/QoutesWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
   "localizedResources": {
-    "ReactDemoWebPartStrings": "lib/webparts/reactDemo/loc/{locale}.js"
+    "ReactDemoWebPartStrings": "lib/webparts/reactDemo/loc/{locale}.js",
+    "QoutesWebPartStrings": "lib/webparts/qoutes/loc/{locale}.js"
   }
 }
