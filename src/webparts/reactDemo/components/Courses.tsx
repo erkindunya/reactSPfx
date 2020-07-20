@@ -104,7 +104,7 @@ export default class Courses extends React.Component<ICoursesProps, ICoursesStat
                 />
               }
               {
-                this
+
               }
             </div>
           </div>
@@ -136,10 +136,10 @@ export default class Courses extends React.Component<ICoursesProps, ICoursesStat
       <td>{c.Duration} Hrs</td>
       <td>$ {c.Price}</td>
       <td>
-        <input type="button" value="Edit" onClick={
+        {/* <input type="button" value="Edit" onClick={
           () =>
 
-        } />
+        } /> */}
       </td>
     </tr>;
   }
