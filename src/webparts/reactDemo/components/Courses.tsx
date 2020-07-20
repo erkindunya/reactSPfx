@@ -167,6 +167,29 @@ export default class Courses extends React.Component<ICoursesProps, ICoursesStat
           }
         } />
       </td>
+      <td>
+        <input type="button" value="Del" onClick={
+          () => {
+            if (confirm("Delete this course?")) {
+              this.provider.deleteItem(c["ID"], c["odata.etag"])
+                .then(() => {
+                  alert("Item Deleted!");
+                  this.setState({
+                    mode: FormMode.ViewAll
+                  });
+
+                  this.refreshData();
+                })
+                .catch((err) => {
+                  alert("Could not delete: " + err);
+                  this.setState({
+                    mode: FormMode.ViewAll
+                  });
+                });
+            }
+          }
+        } />
+      </td>
     </tr>;
   }
 }
