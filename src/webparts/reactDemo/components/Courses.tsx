@@ -4,6 +4,8 @@ import styles from './ReactDemo.module.scss';
 import { CourseProvider } from "../../../services/CourseProvider";
 import { ICourse } from "../../../common/ICourse";
 
+import { NewCourse } from "./NewCourse";
+
 export interface ICoursesProps {
   context: any;
 }
@@ -11,6 +13,7 @@ export interface ICoursesProps {
 interface ICoursesState {
   data: ICourse[];
   mode: FormMode;
+  categories: string[];
 }
 
 enum FormMode {
@@ -28,7 +31,8 @@ export default class Courses extends React.Component<ICoursesProps, ICoursesStat
     // Create the State
     this.state = {
       data: [],
-      mode: FormMode.ViewAll as FormMode
+      mode: FormMode.ViewAll as FormMode,
+      categories: []
     };
 
     this.provider = new CourseProvider("Courses", props.context);
@@ -36,6 +40,19 @@ export default class Courses extends React.Component<ICoursesProps, ICoursesStat
   }
 
   public componentDidMount() {
+    // Get categories
+    this.provider.getCategories()
+      .then((cats: string[]) => {
+        this.setState({
+          categories: cats
+        });
+      });
+
+    this.refreshData();
+  }
+
+  private refreshData() {
+    // Getting Items
     this.provider.getItems()
       .then((items: ICourse[]) => {
         this.setState({
@@ -57,6 +74,7 @@ export default class Courses extends React.Component<ICoursesProps, ICoursesStat
               <span className={styles.title}>Courses</span>
               <p className={styles.subTitle}>List of Courses</p>
               {
+                //view all
                 this.state.mode == FormMode.ViewAll && <input type="button" value="Add..." onClick={() => {
                   this.setState({
                     mode: FormMode.New as FormMode
@@ -68,19 +86,26 @@ export default class Courses extends React.Component<ICoursesProps, ICoursesStat
               {this.state.mode == FormMode.ViewAll && this.getCoursesTable()}
 
               {
-                this.state.mode == FormMode.New && <div>
-                  <h2>Add Form</h2>
-                  <p>TBd - New Form Comes here</p>
-                  <input type="button" value=" Save " />&nbsp;
-                                                  <input type="button" value=" Cancel " onClick={() => {
+                this.state.mode == FormMode.New && <NewCourse provider={this.provider} categories={this.state.categories}
+                  onCancel={() => {
                     this.setState({
                       mode: FormMode.ViewAll as FormMode
                     });
-                  }} />
+                  }}
 
-                </div>
+                  onSaved={() => {
+                    this.setState({
+                      mode: FormMode.ViewAll as FormMode
+                    });
+
+                    this.refreshData();
+                  }}
+
+                />
               }
-
+              {
+                this
+              }
             </div>
           </div>
         </div>
@@ -110,6 +135,12 @@ export default class Courses extends React.Component<ICoursesProps, ICoursesStat
       <td>{c.Category} </td>
       <td>{c.Duration} Hrs</td>
       <td>$ {c.Price}</td>
+      <td>
+        <input type="button" value="Edit" onClick={
+          () =>
+
+        } />
+      </td>
     </tr>;
   }
 }
