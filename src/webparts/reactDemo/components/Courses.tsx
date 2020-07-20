@@ -5,6 +5,7 @@ import { CourseProvider } from "../../../services/CourseProvider";
 import { ICourse } from "../../../common/ICourse";
 
 import { NewCourse } from "./NewCourse";
+import { EditCourse } from "./EditCourse";
 
 export interface ICoursesProps {
   context: any;
@@ -14,6 +15,7 @@ interface ICoursesState {
   data: ICourse[];
   mode: FormMode;
   categories: string[];
+  currentItemID: number;
 }
 
 enum FormMode {
@@ -32,7 +34,8 @@ export default class Courses extends React.Component<ICoursesProps, ICoursesStat
     this.state = {
       data: [],
       mode: FormMode.ViewAll as FormMode,
-      categories: []
+      categories: [],
+      currentItemID: 0
     };
 
     this.provider = new CourseProvider("Courses", props.context);
@@ -74,7 +77,6 @@ export default class Courses extends React.Component<ICoursesProps, ICoursesStat
               <span className={styles.title}>Courses</span>
               <p className={styles.subTitle}>List of Courses</p>
               {
-                //view all
                 this.state.mode == FormMode.ViewAll && <input type="button" value="Add..." onClick={() => {
                   this.setState({
                     mode: FormMode.New as FormMode
@@ -103,9 +105,28 @@ export default class Courses extends React.Component<ICoursesProps, ICoursesStat
 
                 />
               }
-              {
 
+              {
+                this.state.mode == FormMode.Edit && <EditCourse provider={this.provider} categories={this.state.categories}
+                  id={this.state.currentItemID}
+
+                  onCancel={() => {
+                    this.setState({
+                      mode: FormMode.ViewAll as FormMode
+                    });
+                  }}
+
+                  onSaved={() => {
+                    this.setState({
+                      mode: FormMode.ViewAll as FormMode
+                    });
+
+                    this.refreshData();
+                  }}
+
+                />
               }
+
             </div>
           </div>
         </div>
@@ -121,6 +142,7 @@ export default class Courses extends React.Component<ICoursesProps, ICoursesStat
         <td>Category</td>
         <td>Hrs</td>
         <td>Price</td>
+        <td></td>
       </tr>
       {
         this.state.data.map((c: ICourse) => this.getCourseRow(c))
@@ -136,10 +158,14 @@ export default class Courses extends React.Component<ICoursesProps, ICoursesStat
       <td>{c.Duration} Hrs</td>
       <td>$ {c.Price}</td>
       <td>
-        {/* <input type="button" value="Edit" onClick={
-          () =>
-
-        } /> */}
+        <input type="button" value="Edit" onClick={
+          () => {
+            this.setState({
+              mode: FormMode.Edit,
+              currentItemID: parseInt(c["ID"].toString())
+            });
+          }
+        } />
       </td>
     </tr>;
   }
