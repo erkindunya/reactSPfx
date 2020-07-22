@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styles from './ReactDemo.module.scss';
+import styles from '../../reactDemo/components/ReactDemo.module.scss';
 
 import { CourseProvider } from "../../../services/CourseProvider";
 import { ICourse } from "../../../common/ICourse";
@@ -7,9 +7,7 @@ import { ICourse } from "../../../common/ICourse";
 import { NewCourse } from "./NewCourse";
 import { EditCourse } from "./EditCourse";
 
-export interface ICoursesProps {
-  context: any;
-}
+import { ICoursesProps } from "./ICoursesProps";
 
 interface ICoursesState {
   data: ICourse[];
@@ -38,7 +36,7 @@ export default class Courses extends React.Component<ICoursesProps, ICoursesStat
       currentItemID: 0
     };
 
-    this.provider = new CourseProvider("Courses", props.context);
+    this.provider = new CourseProvider(this.props.listName, props.context);
 
   }
 
@@ -74,7 +72,7 @@ export default class Courses extends React.Component<ICoursesProps, ICoursesStat
         <div className={styles.container}>
           <div className={styles.row}>
             <div className={styles.column}>
-              <span className={styles.title}>Courses</span>
+              <span className={styles.title}>{this.props.title}</span>
               <p className={styles.subTitle}>List of Courses</p>
               {
                 this.state.mode == FormMode.ViewAll && <input type="button" value="Add..." onClick={() => {

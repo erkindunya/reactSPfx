@@ -17,11 +17,20 @@
           "manifest": "./src/webparts/qoutes/QoutesWebPart.manifest.json"
         }
       ]
+    },
+    "courses-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/courses/CoursesWebPart.js",
+          "manifest": "./src/webparts/courses/CoursesWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
   "localizedResources": {
     "ReactDemoWebPartStrings": "lib/webparts/reactDemo/loc/{locale}.js",
-    "QoutesWebPartStrings": "lib/webparts/qoutes/loc/{locale}.js"
+    "QoutesWebPartStrings": "lib/webparts/qoutes/loc/{locale}.js",
+    "CoursesWebPartStrings": "lib/webparts/courses/loc/{locale}.js"
   }
 }

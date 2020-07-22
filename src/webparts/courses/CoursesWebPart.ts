@@ -7,22 +7,24 @@ import {
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 
-import * as strings from 'ReactDemoWebPartStrings';
+import * as strings from 'CoursesWebPartStrings';
+import Courses from './components/Courses';
+import { ICoursesProps } from './components/ICoursesProps';
 
-import DropdownDemo from "./components/DropdownDemo";
-
-
-export interface IReactDemoWebPartProps {
-  description: string;
+export interface ICoursesWebPartProps {
+  listname: string;
+  title: string;
 }
 
-export default class ReactDemoWebPart extends BaseClientSideWebPart<IReactDemoWebPartProps> {
+export default class CoursesWebPart extends BaseClientSideWebPart<ICoursesWebPartProps> {
 
   public render(): void {
-    const element: React.ReactElement<any> = React.createElement(
-      DropdownDemo,
+    const element: React.ReactElement<ICoursesProps> = React.createElement(
+      Courses,
       {
-        context: this.context
+        context: this.context,
+        listName: this.properties.listname,
+        title: this.properties.title
       }
     );
 
@@ -48,8 +50,11 @@ export default class ReactDemoWebPart extends BaseClientSideWebPart<IReactDemoWe
             {
               groupName: strings.BasicGroupName,
               groupFields: [
-                PropertyPaneTextField('description', {
-                  label: strings.DescriptionFieldLabel
+                PropertyPaneTextField('title', {
+                  label: "Title"
+                }),
+                PropertyPaneTextField('listname', {
+                  label: "List Name"
                 })
               ]
             }
