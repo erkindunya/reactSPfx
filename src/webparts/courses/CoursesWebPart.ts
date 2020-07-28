@@ -16,7 +16,7 @@ export interface ICoursesWebPartProps {
   title: string;
 }
 
-export default class CoursesWebPart extends BaseClientSideWebPart<ICoursesWebPartProps> {
+export default class CoursesWebPart extends BaseClientSideWebPart <ICoursesWebPartProps> {
 
   public render(): void {
     const element: React.ReactElement<ICoursesProps> = React.createElement(

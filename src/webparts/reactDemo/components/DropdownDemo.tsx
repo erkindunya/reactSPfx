@@ -36,9 +36,10 @@ export default class DropdownDemo extends React.Component<any, IState> {
     }
 
     public componentDidMount() {
-        this.getCategories();
-
-
+        this.getCategories()
+            .then(() => {
+                this.getCustomers(this.state.categories[0]["ID"]);
+            });
     }
 
     public render(): React.ReactElement<IReactDemoProps> {
@@ -55,7 +56,7 @@ export default class DropdownDemo extends React.Component<any, IState> {
                                     {
                                         this.state.categories.map((c: ICategory) => <option value={c["ID"]}>{c.Title}</option>)
                                     }
-                                </select>
+                                </select><br />
 
                 Customer: <select name="customer">
                                     {
@@ -70,21 +71,25 @@ export default class DropdownDemo extends React.Component<any, IState> {
         );
     }
 
-    private getCustomers(catID: number) {
-        sp.web.lists.getByTitle('Customers').items.filter(`Category eq ${catID}`).select("CustomerID, Title").get()
+    private getCustomers(catID: number): Promise<void> {
+        return sp.web.lists.getByTitle('Customers').items.filter(`Category eq ${catID}`).select("CustomerID, Title").get()
             .then((items: ICustomer[]) => {
                 this.setState({
                     customers: items
                 });
+
+                return Promise.resolve();
             });
     }
 
-    private getCategories() {
-        sp.web.lists.getByTitle('Categories').items.get()
+    private getCategories(): Promise<void> {
+        return sp.web.lists.getByTitle('Categories').items.get()
             .then((items: ICategory[]) => {
                 this.setState({
                     categories: items
                 });
+
+                return Promise.resolve();
             });
     }
 }
