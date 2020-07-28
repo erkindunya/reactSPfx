@@ -11,6 +11,9 @@ import { EditCourse } from "./EditCourse";
 
 import { ICoursesProps } from "./ICoursesProps";
 
+import { CourseContext } from "./CourseContext";
+//import { ICourseService } from "./ICourseService";
+
 interface ICoursesState {
   data: ICourse[];
   mode: FormMode;
@@ -18,7 +21,7 @@ interface ICoursesState {
   currentItemID: number;
 }
 
-enum FormMode {
+export enum FormMode {
   ViewAll,
   New,
   Edit
@@ -26,6 +29,7 @@ enum FormMode {
 
 export default class Courses extends React.Component<ICoursesProps, ICoursesState> {
   private provider : CourseProvider;
+  //private service: ICourseService;
 
   constructor(props: ICoursesProps) {
     super(props);
@@ -38,8 +42,15 @@ export default class Courses extends React.Component<ICoursesProps, ICoursesStat
       currentItemID: 0
     };
 
+    /*
     this.provider = new CourseProvider(this.props.listName, props.context);
 
+    this.service = {
+      provider : this.provider,
+      mode: FormMode.ViewAll,
+      currentItemID: 0,
+      categories: []
+    };*/
   }
 
   public componentDidMount() {
