@@ -2,7 +2,8 @@ import * as React from 'react';
 import styles from './FluentUiDemo.module.scss';
 import { IFluentUiDemoProps } from './IFluentUiDemoProps';
 
-import { Label, TextField, PrimaryButton, DefaultButton } from "office-ui-fabric-react";
+import { Label, TextField, PrimaryButton, DefaultButton,Checkbox } from "office-ui-fabric-react";
+import { transitionKeysAreEqual } from 'office-ui-fabric-react/lib/utilities/keytips/IKeytipTransitionKey';
 
 export default class FluentUiDemo extends React.Component<IFluentUiDemoProps,any> {
   constructor(props: IFluentUiDemoProps) {
@@ -10,7 +11,9 @@ export default class FluentUiDemo extends React.Component<IFluentUiDemoProps,any
 
     this.state = {
       name: "",
-      email: ""
+ 
+      email: "",
+      discount: transitionKeysAreEqual
     };
 
   }
@@ -20,7 +23,7 @@ export default class FluentUiDemo extends React.Component<IFluentUiDemoProps,any
       <div className={ styles.fluentUiDemo }>
         <div className={ styles.container }>
           <div className={ styles.row }>
-            <div className={ styles.column }>
+      <div className={ styles.column }>
               <span className={ styles.title }>Fluent UI Demo !</span>
               <div>
                 <Label>Customer Info</Label>
@@ -36,13 +39,21 @@ export default class FluentUiDemo extends React.Component<IFluentUiDemoProps,any
                   });
                 }}/><br/>
 
-                <PrimaryButton text=" Save " />
+                <Checkbox label="Discount" checked={ this.state.discount } onChange={ (ev, chkd) => {
+                  this.setState({
+                    discount: chkd
+                  });
+                }} /><br/><br/>
+
+                <PrimaryButton text=" Save " />&nbsp;&nbsp;
+                <DefaultButton text=" Cancel " />
               </div>
-              <div>
+              <div className={ styles.text }>
                 <Label>Form Values</Label>
                 <Label>
                   Name: { this.state.name } <br/>
-                  Email: { this.state.email }
+                  Email: { this.state.email } <br/>
+                  Discount: { this.state.discount ? "Yes" : "No" }
                 </Label>
               </div>
             </div>
