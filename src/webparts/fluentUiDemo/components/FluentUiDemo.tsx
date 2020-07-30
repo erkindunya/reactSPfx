@@ -26,15 +26,24 @@ const ddStyles: Partial<IDropdownStyles> = {
   }
 };
 
-export default class FluentUiDemo extends React.Component<IFluentUiDemoProps, any> {
+interface IFluentUiDemoState {
+  name: string;
+  email: string;
+  discount: boolean;
+  status: string;
+  items: IDropdownOption[];
+}
+
+export default class FluentUiDemo extends React.Component<IFluentUiDemoProps, IFluentUiDemoState> {
   constructor(props: IFluentUiDemoProps) {
     super(props);
 
     this.state = {
       name: "",
       email: "",
-      discount: transitionKeysAreEqual,
-      status: ""
+      discount: true,
+      status: "",
+      items: []
     };
 
   }
@@ -65,9 +74,12 @@ export default class FluentUiDemo extends React.Component<IFluentUiDemoProps, an
                   placeholder="Citizenship Status"
                   styles={ddStyles}
                   options={options}
+                  multiSelect={true}
                   onChange={(event, item: IDropdownOption) => {
+
                     this.setState({
-                      status: item.text
+                      items: item.selected ? [...this.state.items, item] :
+                        this.state.items.filter((i: IDropdownOption) => i.key != item.key)
                     });
 
                   }} /><br />
@@ -87,7 +99,13 @@ export default class FluentUiDemo extends React.Component<IFluentUiDemoProps, an
                   Name: {this.state.name} <br />
                   Email: {this.state.email} <br />
                   Discount: {this.state.discount ? "Yes" : "No"} <br />
-                  Status: {this.state.status}
+                  Status: {this.state.status} <br />
+                  <div>
+                    Citizenship:
+                    {
+                      this.state.items.map((i: IDropdownOption) => <div>{i.text}</div>)
+                    }
+                  </div>
                 </Label>
               </div>
             </div>
