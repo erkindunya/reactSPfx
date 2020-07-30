@@ -2,46 +2,34 @@ import * as React from "react";
 import styles from "./FluentUiDemo.module.scss";
 
 import { Label, TextField, PrimaryButton } from "office-ui-fabric-react";
-import { transitionKeysAreEqual } from "office-ui-fabric-react/lib/utilities/keytips/IKeytipTransitionKey";
 
-export default class TempConverter extends React.Component<
-  IFluentUiDemoProps,
-  any
-> {
-  constructor(props: IFluentUiDemoProps) {
-    super(props);
+export default function TempConvert(props: any): JSX.Element {
+  let [celcius, setCelcius] = React.useState(0);
+  let [faren, setFaren] = React.useState(0);
 
-    this.state = {
-      TempInC: "",
-      TempInF: "",
-    };
-  }
+  return (
+    <div>
+      <span className={styles.title}>Temp Converter!</span>
+      <div>
+        <TextField
+          label="Celcius : "
+          onChange={(event, value) => {
+            setCelcius(parseFloat(value));
+          }}
+        />{" "}
+        &nbsp;&nbsp;
+        <PrimaryButton
+          text=" Convert "
+          onClick={() => {
+            let f = (9 / 5) * celcius + 32.0;
 
-  public render(): React.ReactElement<IFluentUiDemoProps> {
-    return (
-      <div className={styles.fluentUiDemo}>
-        <div className={styles.container}>
-          <div className={styles.row}>
-            <div className={styles.column}>
-              <span className={styles.title}>Fluent UI Demo !</span>
-              <div>
-                <Label>Temperature Converter</Label>
-                <TextField
-                  label="Temp (C): "
-                  onChange={(event, value) => {
-                    this.setState({
-                      TempInC: value,
-                    });
-                  }}
-                />{" "}
-                <PrimaryButton text=" Save " />
-                <Label>Temp(F):</Label>{" "}
-              </div>
-              <div className={styles.text}></div>
-            </div>
-          </div>
-        </div>
+            setFaren(f);
+          }}
+        />
+        <br />
+        <br />
+        <Label>Farenheit : {faren}</Label>
       </div>
-    );
-  }
+    </div>
+  );
 }
