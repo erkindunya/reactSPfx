@@ -1,28 +1,27 @@
-import * as React from "react";
-import * as ReactDom from "react-dom";
-import { Version } from "@microsoft/sp-core-library";
+import * as React from 'react';
+import * as ReactDom from 'react-dom';
+import { Version } from '@microsoft/sp-core-library';
 import {
   IPropertyPaneConfiguration,
-  PropertyPaneTextField,
-} from "@microsoft/sp-property-pane";
-import { BaseClientSideWebPart } from "@microsoft/sp-webpart-base";
+  PropertyPaneTextField
+} from '@microsoft/sp-property-pane';
+import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 
-import * as strings from "FluentUiDemoWebPartStrings";
-import FluentUiDemo from "./components/FluentUiDemo";
-import { IFluentUiDemoProps } from "./components/IFluentUiDemoProps";
+import * as strings from 'FluentUiDemoWebPartStrings';
+import PickerDemo from './components/PickerDemo';
+import { IFluentUiDemoProps } from './components/IFluentUiDemoProps';
 
 export interface IFluentUiDemoWebPartProps {
   description: string;
 }
 
-export default class FluentUiDemoWebPart extends BaseClientSideWebPart<
-  IFluentUiDemoWebPartProps
-> {
+export default class FluentUiDemoWebPart extends BaseClientSideWebPart<IFluentUiDemoWebPartProps> {
+
   public render(): void {
-    const element: React.ReactElement<IFluentUiDemoProps> = React.createElement(
-      FluentUiDemo,
+    const element = React.createElement(
+      PickerDemo,
       {
-        description: this.properties.description,
+        context: this.context
       }
     );
 
@@ -34,7 +33,7 @@ export default class FluentUiDemoWebPart extends BaseClientSideWebPart<
   }
 
   protected get dataVersion(): Version {
-    return Version.parse("1.0");
+    return Version.parse('1.0');
   }
 
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
@@ -42,20 +41,20 @@ export default class FluentUiDemoWebPart extends BaseClientSideWebPart<
       pages: [
         {
           header: {
-            description: strings.PropertyPaneDescription,
+            description: strings.PropertyPaneDescription
           },
           groups: [
             {
               groupName: strings.BasicGroupName,
               groupFields: [
-                PropertyPaneTextField("description", {
-                  label: strings.DescriptionFieldLabel,
-                }),
-              ],
-            },
-          ],
-        },
-      ],
+                PropertyPaneTextField('description', {
+                  label: strings.DescriptionFieldLabel
+                })
+              ]
+            }
+          ]
+        }
+      ]
     };
   }
 }
