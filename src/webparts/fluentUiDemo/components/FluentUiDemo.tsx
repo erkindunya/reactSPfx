@@ -2,7 +2,7 @@ import * as React from 'react';
 import styles from './FluentUiDemo.module.scss';
 import { IFluentUiDemoProps } from './IFluentUiDemoProps';
 
-import { Fabric, Label, TextField, PrimaryButton, DefaultButton, Checkbox, IDropdownStyles } from "office-ui-fabric-react";
+import { Fabric, Label, TextField, PrimaryButton, DefaultButton, Checkbox, Toggle, IDropdownStyles } from "office-ui-fabric-react";
 import { Dropdown, IDropdownOption, DropdownMenuItemType } from "office-ui-fabric-react";
 import { ChoiceGroup, IChoiceGroupOption } from "office-ui-fabric-react";
 
@@ -94,6 +94,12 @@ export default class FluentUiDemo extends React.Component<IFluentUiDemoProps, IF
                 scheme: item
               });
             }} /><br />
+
+          <Toggle label="Discount" checked={this.state.discount} onChange={(ev, chkd) => {
+            this.setState({
+              discount: chkd
+            });
+          }} onText="Yes" offText="No" /><br />
 
           <Checkbox label="Discount" checked={this.state.discount} onChange={(ev, chkd) => {
             this.setState({
