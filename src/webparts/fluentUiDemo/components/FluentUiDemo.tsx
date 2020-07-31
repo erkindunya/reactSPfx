@@ -2,133 +2,66 @@ import * as React from 'react';
 import styles from './FluentUiDemo.module.scss';
 import { IFluentUiDemoProps } from './IFluentUiDemoProps';
 
-import { Fabric, Label, TextField, PrimaryButton, DefaultButton, Checkbox, Toggle, IDropdownStyles } from "office-ui-fabric-react";
-import { Dropdown, IDropdownOption, DropdownMenuItemType } from "office-ui-fabric-react";
-import { ChoiceGroup, IChoiceGroupOption } from "office-ui-fabric-react";
-
+import { Label, TextField, PrimaryButton, DefaultButton, Checkbox } from "office-ui-fabric-react";
 import { transitionKeysAreEqual } from 'office-ui-fabric-react/lib/utilities/keytips/IKeytipTransitionKey';
-
-const options: IDropdownOption[] = [
-  { key: "head1", text: "Indians", itemType: DropdownMenuItemType.Header },
-  { key: "1", text: 'Indian' },
-  { key: "2", text: 'NRI' },
-  { key: "div1", text: '-', itemType: DropdownMenuItemType.Divider },
-  { key: "6", text: 'OPC' },
-  { key: "head2", text: "Regional", itemType: DropdownMenuItemType.Header },
-  { key: "3", text: 'Nepalese' },
-  { key: "4", text: 'Sri Lankan' },
-  { key: "head3", text: "Others", itemType: DropdownMenuItemType.Header },
-  { key: "5", text: 'Foreigner' }
-];
-
-const schemeoptions: IChoiceGroupOption[] = [
-  { key: "1", text: "Ordinary" },
-  { key: "2", text: "Special" },
-  { key: "3", text: "VIP" }
-];
-
-const ddStyles: Partial<IDropdownStyles> = {
-  dropdown: {
-    width: 250
-  }
-};
-
-interface IFluentUiDemoState {
-  name: string;
-  email: string;
-  discount: boolean;
-  status: string;
-  items: IDropdownOption[];
-  scheme: IChoiceGroupOption;
-}
-
-export default class FluentUiDemo extends React.Component<IFluentUiDemoProps, IFluentUiDemoState> {
+import TempConvert from "./TempConverter"
+export default class FluentUiDemo extends React.Component<IFluentUiDemoProps, any> {
   constructor(props: IFluentUiDemoProps) {
     super(props);
 
     this.state = {
       name: "",
       email: "",
-      discount: true,
-      status: "",
-      items: [],
-      scheme: undefined
+      discount: transitionKeysAreEqual
     };
 
   }
 
   public render(): React.ReactElement<IFluentUiDemoProps> {
     return (
-      <Fabric>
-        <div>
-          <Label>Customer Info</Label>
-          <TextField label="Name: " onChange={(event, value) => {
-            this.setState({
-              name: value
-            });
-          }} />
+      <div className={styles.fluentUiDemo}>
+        <div className={styles.container}>
+          <div className={styles.row}>
+            <div className={styles.column}>
+              <span className={styles.title}>Fluent UI Demo !</span>
+              <div>
+                <TempConvert />
+              </div>
+              <div>
+                <Label>Customer Info</Label>
+                <TextField label="Name: " onChange={(event, value) => {
+                  this.setState({
+                    name: value
+                  });
+                }} />
 
-          <TextField label="Email: " onChange={(event, value) => {
-            this.setState({
-              email: value
-            });
-          }} /><br />
+                <TextField label="Email: " onChange={(event, value) => {
+                  this.setState({
+                    email: value
+                  });
+                }} /><br />
 
-          <Dropdown label="Citizen Status: "
-            placeholder="Citizenship Status"
-            styles={ddStyles}
-            options={options}
-            multiSelect={true}
-            onChange={(event, item: IDropdownOption) => {
+                <Checkbox label="Discount" checked={this.state.discount} onChange={(ev, chkd) => {
+                  this.setState({
+                    discount: chkd
+                  });
+                }} /><br /><br />
 
-              this.setState({
-                items: item.selected ? [...this.state.items, item] :
-                  this.state.items.filter((i: IDropdownOption) => i.key != item.key)
-              });
-
-            }} /><br />
-
-          <ChoiceGroup options={schemeoptions} label="Scheme:" required
-            onChange={(event, item: IChoiceGroupOption) => {
-              this.setState({
-                scheme: item
-              });
-            }} /><br />
-
-          <Toggle label="Discount" checked={this.state.discount} onChange={(ev, chkd) => {
-            this.setState({
-              discount: chkd
-            });
-          }} onText="Yes" offText="No" /><br />
-
-          <Checkbox label="Discount" checked={this.state.discount} onChange={(ev, chkd) => {
-            this.setState({
-              discount: chkd
-            });
-          }} /><br /><br />
-
-          <PrimaryButton text=" Save " />&nbsp;&nbsp;
+                <PrimaryButton text=" Save " />&nbsp;&nbsp;
                 <DefaultButton text=" Cancel " />
-        </div>
-        <div>
-          <Label>Form Values</Label>
-          <Label>
-            Name: {this.state.name} <br />
+              </div>
+              <div className={styles.text}>
+                <Label>Form Values</Label>
+                <Label>
+                  Name: {this.state.name} <br />
                   Email: {this.state.email} <br />
-                  Discount: {this.state.discount ? "Yes" : "No"} <br />
-                  Status: {this.state.status} <br />
-            <div>
-              Citizenship:
-                    {
-                this.state.items.map((i: IDropdownOption) => <div>{i.text}</div>)
-              }
+                  Discount: {this.state.discount ? "Yes" : "No"}
+                </Label>
+              </div>
             </div>
-                  Scheme: {
-              this.state.scheme && <div>{this.state.scheme.text} </div>
-            }
-          </Label>
+          </div>
         </div>
-      </Fabric>
+      </div>
     );
   }
 }
