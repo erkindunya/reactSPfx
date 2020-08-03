@@ -70,6 +70,56 @@ export default class PeoplePickerDemo extends React.Component<IPeoplePickerProps
         return [];
     }
 
+    private searchInternal = (text: string) : IPersonaProps[] | Promise<IPersonaProps[]> => {
+        let url : string = `${ this.props.context.pageContext.web.absoluteUrl}/_api/SP.UI.ApplicationPages.ClientPeoplePickerWebServiceInterface.clientPeoplePickerSearchUser`;
+
+        if(text.length>2) {
+            let payload : any = { queryParams: 
+                                    {   AllowEmailAddresses: true,
+                                        AllowMultipleEntities:false,
+                                        AllUrlZones:false,
+                                        MaximumEntitySuggestions:5,
+                                        PrincipalSource:15,
+                                        PrincipalType:1,
+                                        QueryString: text
+                                    }
+                                };
+
+            return this.props.context.spHttpClient.post(url, SPHttpClient.configurations.v1, {
+                    headers:{
+                        'Accept': 'application/json;odata=nometadata',
+                        'odata-version' : ''
+                    },
+                    data: JSON.stringify(payload)
+                }).then((resp : SPHttpClientResponse) : Promise<any> => {
+                        return resp.json();
+                }).then((results: any) => {
+                    /*
+{"@odata.context":"https://mindsharedev.sharepoint.com/sites/courses/_api/$metadata#Edm.String","value":"[
+	{\"Key\":\"i:0#.f|membership|vijay@mindsharedev.onmicrosoft.com\",
+	\"DisplayText\":\"Vijay Natrajan\",
+	\"IsResolved\":true,
+	\"Description\":\"vijay@mindsharedev.onmicrosoft.com\",
+	\"EntityType\":\"User\",
+	\"EntityData\":{\"IsAltSecIdPresent\":\"False\",\"ObjectId\":\"a83fcd06-5203-4087-be48-4490e7a1f9d6\",\"Title\":\"\",\"Email\":\"vijay@mindsharedev.onmicrosoft.com\",\"MobilePhone\":\"\",\"OtherMails\":\"vijay@mind-share.in\",\"Department\":\"\"},\"MultipleMatches\":[],\"ProviderName\":\"Tenant\",\"ProviderDisplayName\":\"Tenant\"}]"}
+                    */
+                   let people = results.value.map(r => {
+                       return { text: r.DisplayText,
+                                secondaryText: r.EntityData.Email
+                              };
+                   });
+                    
+                    return Promise.resolve(people);
+                }).catch(err => {
+                    console.log("People Search Error: " + err);
+                    return Promise.reject(err);
+                });
+    
+            }
+    
+            return [];
+    }
+
     
     private searchPeople = (text: string) : IPersonaProps[] | Promise<IPersonaProps[]> => {
         let url : string = `${ this.props.context.pageContext.web.absoluteUrl}/_api/search/query?querytext='*${text}*'&rowlimit=10&sourceid='b09a7990-05ea-4af9-81ef-edfab16c4e31'`;
