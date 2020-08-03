@@ -8,17 +8,17 @@ import {
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 
 import * as strings from 'FluentUiDemoWebPartStrings';
-import PeoplePickerDemo from "./components/PeoplePickerDemo";
+import GridDemo from "./components/GridDemo";
 
 export interface IFluentUiDemoWebPartProps {
   description: string;
 }
 
-export default class FluentUiDemoWebPart extends BaseClientSideWebPart<IFluentUiDemoWebPartProps> {
+export default class FluentUiDemoWebPart extends BaseClientSideWebPart <IFluentUiDemoWebPartProps> {
 
   public render(): void {
     const element = React.createElement(
-      PeoplePickerDemo,
+      GridDemo,
       {
         context: this.context
       }
