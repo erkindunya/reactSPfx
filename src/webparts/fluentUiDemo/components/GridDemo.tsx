@@ -2,7 +2,7 @@ import * as React from 'react';
 import styles from './FluentUiDemo.module.scss';
 
 import { Fabric, Label, TextField, DetailsList, DetailsListLayoutMode,
-  IColumn } from "office-ui-fabric-react";
+  IColumn, SelectionMode, Selection, ISelectionOptions } from "office-ui-fabric-react";
 
 import { sp } from "@pnp/sp/presets/all";
 
@@ -22,7 +22,8 @@ interface IGridDemoProps {
 }
 
 interface IGridDemoState {
-  data: ICourse[]
+  data: ICourse[];
+  selectedData: ICourse[];
 }
 
 
@@ -70,6 +71,8 @@ const columns : IColumn[] = [
 ];
 
 export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoState> {
+  private selections : Selection;
+
   constructor(props: IGridDemoProps) {
     super(props);
 
@@ -77,8 +80,19 @@ export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoS
       spfxContext:this.props.context
     });
 
+    this.selections = new Selection({
+      onSelectionChanged: () => {
+        let selCourses : ICourse[] = this.selections.getSelection() as ICourse[];
+
+        this.setState({
+          selectedData: selCourses
+        });
+      }
+    });
+
     this.state = {
-      data: []
+      data: [],
+      selectedData: []
     };
 
   }
@@ -102,8 +116,19 @@ export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoS
                 items={ this.state.data }
                 isHeaderVisible={ true }
                 layoutMode={ DetailsListLayoutMode.justified }
+                selectionMode={ SelectionMode.multiple }
                 columns={ columns }
+                selection={ this.selections }
               />
+              <div>
+                <Label>Selected Courses : ({ this.selections.getSelectedCount })</Label>
+                {
+                  this.state.selectedData.map((c: ICourse) => <div>
+                    {c.CourseID } <br/>
+                    {c.Title }
+                  </div>)
+                }
+              </div>
         </Fabric>
     );
   }
