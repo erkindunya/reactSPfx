@@ -2,9 +2,9 @@ import * as React from 'react';
 import styles from './FluentUiDemo.module.scss';
 
 import { Fabric, Label, TextField, DetailsList, DetailsListLayoutMode,
-  IColumn, SelectionMode, Selection, ISelectionOptions, MarqueeSelection } from "office-ui-fabric-react";
+  IColumn, SelectionMode, Selection, MarqueeSelection } from "office-ui-fabric-react";
 
-import { sp, Items } from "@pnp/sp/presets/all";
+import { sp } from "@pnp/sp/presets/all";
 
 
 export interface ICourse {
@@ -115,20 +115,12 @@ export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoS
   public render(): React.ReactElement<IGridDemoProps> {
     return (
         <Fabric>
-          <TextField label="Search : " onChange={(e,v)=> {
-            if (v.length > 2) {
-              let datacopy: ICourse[] = [...this.state.data];
-              let matches= datacopy.filter (c =>c.Title.toLocaleLowerCase().indexOf(v.toLocaleLowerCase())>-1);
-              this.setState({
-                data:matches
-
-});
-.catch(err => {
-  console.log("Error fetching courses!" + err);
-}) 
-}
-          }}"/>
-          <MarqueeSelection selection= {this.selections}> 
+<TextField label="Search :" onChange={ (e,value: string) => {
+                this.setState({
+                  data: value ? this.state.original.filter(c => c.Title.toLowerCase().indexOf(value.toLowerCase())>-1) : this.state.original
+                });
+            }} /><br/>
+            <MarqueeSelection selection={ this.selections }>
               <DetailsList 
                 items={ this.state.data }
                 isHeaderVisible={ true }
@@ -137,7 +129,7 @@ export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoS
                 columns={ columns }
                 selection={ this.selections }
               />
-              </MarqueeSelection>
+            </MarqueeSelection>
               <div>
                 <Label>Selected Courses : ({ this.selections.getSelectedCount() })</Label>
                 {
