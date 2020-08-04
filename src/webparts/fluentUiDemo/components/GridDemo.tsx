@@ -4,7 +4,7 @@ import styles from './FluentUiDemo.module.scss';
 import { Fabric, Label, TextField, DetailsList, DetailsListLayoutMode,
   IColumn, SelectionMode, Selection, ISelectionOptions, MarqueeSelection } from "office-ui-fabric-react";
 
-import { sp } from "@pnp/sp/presets/all";
+import { sp, Items } from "@pnp/sp/presets/all";
 
 
 export interface ICourse {
@@ -22,6 +22,7 @@ interface IGridDemoProps {
 }
 
 interface IGridDemoState {
+  original:  ICourse[];
   data: ICourse[];
   selectedData: ICourse[];
 }
@@ -91,6 +92,7 @@ export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoS
     });
 
     this.state = {
+      original: [],
       data: [],
       selectedData: []
     };
@@ -101,6 +103,7 @@ export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoS
     sp.web.lists.getByTitle("Courses").items.get<ICourse[]>()
       .then(items => {
           this.setState({
+            original: items,
             data: items
           });
       })
@@ -112,6 +115,19 @@ export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoS
   public render(): React.ReactElement<IGridDemoProps> {
     return (
         <Fabric>
+          <TextField label="Search : " onChange={(e,v)=> {
+            if (v.length > 2) {
+              let datacopy: ICourse[] = [...this.state.data];
+              let matches= datacopy.filter (c =>c.Title.toLocaleLowerCase().indexOf(v.toLocaleLowerCase())>-1);
+              this.setState({
+                data:matches
+
+});
+.catch(err => {
+  console.log("Error fetching courses!" + err);
+}) 
+}
+          }}"/>
           <MarqueeSelection selection= {this.selections}> 
               <DetailsList 
                 items={ this.state.data }
