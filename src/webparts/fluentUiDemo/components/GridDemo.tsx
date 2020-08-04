@@ -121,7 +121,7 @@ export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoS
                 selection={ this.selections }
               />
               <div>
-                <Label>Selected Courses : ({ this.selections.getSelectedCount })</Label>
+                <Label>Selected Courses : ({ this.selections.getSelectedCount() })</Label>
                 {
                   this.state.selectedData.map((c: ICourse) => <div>
                     {c.CourseID } <br/>
