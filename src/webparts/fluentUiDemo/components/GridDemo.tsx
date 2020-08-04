@@ -2,7 +2,7 @@ import * as React from 'react';
 import styles from './FluentUiDemo.module.scss';
 
 import { Fabric, Label, TextField, DetailsList, DetailsListLayoutMode,
-  IColumn, SelectionMode, Selection, ISelectionOptions } from "office-ui-fabric-react";
+  IColumn, SelectionMode, Selection, ISelectionOptions, MarqueeSelection } from "office-ui-fabric-react";
 
 import { sp } from "@pnp/sp/presets/all";
 
@@ -112,6 +112,7 @@ export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoS
   public render(): React.ReactElement<IGridDemoProps> {
     return (
         <Fabric>
+          <MarqueeSelection selection= {this.selections}> 
               <DetailsList 
                 items={ this.state.data }
                 isHeaderVisible={ true }
@@ -120,6 +121,7 @@ export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoS
                 columns={ columns }
                 selection={ this.selections }
               />
+              </MarqueeSelection>
               <div>
                 <Label>Selected Courses : ({ this.selections.getSelectedCount() })</Label>
                 {
