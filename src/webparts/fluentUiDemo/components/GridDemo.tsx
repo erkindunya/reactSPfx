@@ -115,9 +115,11 @@ export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoS
   public render(): React.ReactElement<IGridDemoProps> {
     return (
         <Fabric>
-<TextField label="Search :" onChange={ (e,value: string) => {
+            <TextField label="Search :" onChange={ (e,value: string) => {
                 this.setState({
-                  data: value ? this.state.original.filter(c => c.Title.toLowerCase().indexOf(value.toLowerCase())>-1) : this.state.original
+                  data: value ? this.state.original
+                    .filter(c => c.Title.toLowerCase().indexOf(value.toLowerCase())>-1 || 
+                                 c.Category.toLowerCase().indexOf(value.toLowerCase())>-1 ) : this.state.original
                 });
             }} /><br/>
             <MarqueeSelection selection={ this.selections }>
