@@ -3,6 +3,8 @@ import * as React from "react";
 import { ICourse } from "../../../common/ICourse";
 import { CourseProvider } from "../../../services/CourseProvider";
 
+import { Fabric, Label, TextField, Dropdown,IDropdownOption, DefaultButton,PrimaryButton,ITextField,IDropdownProps } from "office-ui-fabric-react";
+
 export interface IModifyCourseProps {
     onCancel? : ()=>void,
     onSaved? : ()=>void,
@@ -12,53 +14,70 @@ export interface IModifyCourseProps {
 }
 
 export function ModifyCourse(props: IModifyCourseProps) : JSX.Element {
+    let [options, setOptions] = React.useState<IDropdownOption[]>();
+    let [flag,setFlag] = React.useState<boolean>(false);
 
     let refs =  {
-        CourseID: React.createRef<HTMLInputElement>(),
-        Category: React.createRef<HTMLSelectElement>(),
-        Title: React.createRef<HTMLInputElement>(),
-        Description: React.createRef<HTMLTextAreaElement>(),
-        Technology: React.createRef<HTMLInputElement>(),
-        Duration: React.createRef<HTMLInputElement>(),
-        Price: React.createRef<HTMLInputElement>()
+        CourseID: React.useRef<ITextField>(),
+        Category: React.useRef<IDropdownProps>(),
+        Title: React.useRef<ITextField>(),
+        Description: React.useRef<ITextField>(),
+        Technology: React.useRef<ITextField>(),
+        Duration: React.useRef<ITextField>(),
+        Price: React.useRef<ITextField>()
     };
 
     let eTag: string  = "";
 
-    // Fetch and populate form
-    props.provider.getItemById(props.id).then((c: ICourse) => {
-        refs.CourseID.current.value=c.CourseID.toString();
-        refs.Title.current.value=c.Title;
-        refs.Description.current.value=c.Description;
-        refs.Technology.current.value=c.Technology;
-        refs.Category.current.value=c.Category;
-        refs.Duration.current.value=c.Duration.toString();
-        refs.Price.current.value=c.Price.toString();
-        eTag=c["odata.etag"];
+    React.useEffect(() => {
+        // CreateDropdown Options
+        let opt :IDropdownOption[] = props.categories.map((p:string) =>{
+            return {
+                key: p,
+                text:p
+            }
+        });
+        
+        setOptions(opt);
+        setFlag(true);
 
-    }).catch(err=> {
-        alert("Unable to populat edit form!");
-        props.onCancel();
-        return;
-    });
+        // Fetch and populate form
+        props.provider.getItemById(props.id).then((c: ICourse) => {
+            refs.CourseID.current.value=c.CourseID.toString();
+            refs.Title.current.value=c.Title;
+            refs.Description.current.value=c.Description;
+            refs.Technology.current.value=c.Technology;
+            refs.Category.current.selectedKey=c.Category;
+            refs.Duration.current.value=c.Duration.toString();
+            refs.Price.current.value=c.Price.toString();
+            eTag=c["odata.etag"];
+
+        }).catch(err=> {
+            alert("Unable to populat edit form!");
+            props.onCancel();
+            return;
+        });
+
+    },[flag]);
 
 
-    return <div>
-            <h2>Edit Form</h2>
-            Course ID : <input type="number" name="CourseID" ref={ refs.CourseID }/><br/>
-            Name : <input type="text" name="Title" ref={ refs.Title } /><br/>
-            Description : <br/><textarea name="Description" cols={30} rows={4} ref={ refs.Description } /><br/>
-            Category : 
-            <select name="Category" ref={ refs.Category }>
+    return <Fabric>
+            
+            <TextField label="Course ID: " componentRef={ refs.CourseID } /><br/>
+            <TextField label="Course Name: " componentRef={ refs.Title } /><br/>
+            <TextField label="Description: " componentRef={ refs.Description } multiline rows={ 5 } resizable /><br/>
+           
+            <Dropdown options={ options } label="Category: " multiSelect={ false }>
                 {
                     props.categories.map((c: string) => <option value={ c }>{c}</option>)
                 }
-            </select><br/>
-            Technology : <input type="text" name="Technology" ref={ refs.Technology } /><br/>          
-            Duration : <input type="number" name="Duration" ref={ refs.Duration }/><br/>
-            Price : <input type="number" name="Price" ref={ refs.Price } /><br/>
+            </Dropdown><br/>
 
-            <input type="button" value=" Save " onClick={ () => {
+            <TextField label="Technology: " componentRef={ refs.Technology } /><br/>          
+            <TextField label="Duration: " componentRef={ refs.Duration }/><br/>
+            <TextField label="Price: " componentRef={ refs.Price } /><br/>
+
+            <PrimaryButton text="Save" onClick={ () => {
                 // Validations come here
 
                 if(confirm("Update this Course?")) {
@@ -66,7 +85,7 @@ export function ModifyCourse(props: IModifyCourseProps) : JSX.Element {
                         CourseID: parseInt(refs.CourseID.current.value),
                         Title:refs.Title.current.value,
                         Description: refs.Description.current.value,
-                        Category:refs.Category.current.value,
+                        Category:refs.Category.current.selectedKey,
                         Technology: refs.Technology.current.value,
                         Duration: parseInt(refs.Duration.current.value),
                         Price:parseFloat(refs.Price.current.value)
@@ -76,6 +95,6 @@ export function ModifyCourse(props: IModifyCourseProps) : JSX.Element {
                     });
                 }
             }} />&nbsp;
-            <input type="button" value=" Cancel " onClick={ ()=> props.onCancel() } />
-       </div>;
+            <DefaultButton text=" Cancel " onClick={ ()=> props.onCancel() } />
+       </Fabric>;
 }
