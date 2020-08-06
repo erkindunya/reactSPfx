@@ -1,10 +1,12 @@
 import * as React from 'react';
 import styles from './FluentUiDemo.module.scss';
 
-import { Fabric, Label, TextField, DetailsList, DetailsListLayoutMode,
-  IColumn, SelectionMode, Selection, MarqueeSelection } from "office-ui-fabric-react";
+import { CourseProvider } from "../../../services/CourseProvider";
 
-import { sp } from "@pnp/sp/presets/all";
+import { Fabric, Label, TextField, DetailsList, DetailsListLayoutMode,
+  IColumn, SelectionMode, Selection, MarqueeSelection, Panel, PanelType } from "office-ui-fabric-react";
+
+import { ModifyCourse } from "./ModifyCourse";
 
 
 export interface ICourse {
@@ -26,12 +28,15 @@ interface IGridDemoState {
   data: ICourse[];
   selectedData: ICourse[];
   columns: IColumn[];
+  currentItem: ICourse;
+  showPane:boolean;
+  categories:string[]
 }
 
 
 export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoState> {
   private selections : Selection;
-
+  private provider : CourseProvider;
   
   private handleColumnClick = (event, column: IColumn) => {
     
@@ -52,7 +57,7 @@ export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoS
     });
 
     // Actual Sort
-    const sortedItems = this.sortItems(data,currCol.fieldName,currCol.isSortedDescending);
+    const sortedItems = this.sortItems<ICourse>(data,currCol.fieldName,currCol.isSortedDescending);
 
     this.setState({
       data: sortedItems,
@@ -111,16 +116,16 @@ export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoS
   constructor(props: IGridDemoProps) {
     super(props);
 
-    sp.setup({
-      spfxContext:this.props.context
-    });
+    this.provider = new CourseProvider("Courses",this.props.context);
 
     this.selections = new Selection({
       onSelectionChanged: () => {
         let selCourses : ICourse[] = this.selections.getSelection() as ICourse[];
 
         this.setState({
-          selectedData: selCourses
+          selectedData: selCourses,
+          currentItem: selCourses[0],
+          showPane: true
         });
       }
     });
@@ -129,13 +134,23 @@ export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoS
       original: [],
       data: [],
       selectedData: [],
-      columns: this.columns
+      columns: this.columns,
+      currentItem: null,
+      showPane: false,
+      categories:[]
     };
 
   }
 
   public componentDidMount() {
-    sp.web.lists.getByTitle("Courses").items.get<ICourse[]>()
+    this.provider.getCategories()
+      .then(items=>{
+        this.setState({
+          categories:items
+        });
+      });
+
+    this.provider.getItems()
       .then(items => {
           this.setState({
             original: items,
@@ -171,12 +186,36 @@ export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoS
                 items={ this.state.data }
                 isHeaderVisible={ true }
                 layoutMode={ DetailsListLayoutMode.justified }
-                selectionMode={ SelectionMode.multiple }
+                selectionMode={ SelectionMode.single }
                 columns={ this.state.columns }
                 selection={ this.selections }
                 compact={ true }
               />
             </MarqueeSelection>
+            <Panel type={ PanelType.medium } isOpen={ this.state.showPane } onDismiss={ ()=> {
+              this.setState({
+                showPane: false
+              });
+            }}>
+              <div> 
+                <h2>Edit Course</h2>
+                <ModifyCourse id={ this.state.currentItem["ID"]} 
+                    provider={ this.provider }
+                    categories={this.state.categories}
+
+                    onCancel={ () =>{
+                      this.setState({
+                        showPane:false
+                      });
+                    }}
+
+                    onSaved={ ()=>{
+                      
+                    }}
+                    />
+              </div>
+            </Panel>
+
               <div>
                 <Label>Selected Courses : ({ this.selections.getSelectedCount() })</Label>
                 {
