@@ -26,7 +26,7 @@ export function ModifyCourse(props: IModifyCourseProps) : JSX.Element {
     let eTag: string  = "";
 
     // Fetch and populate form
-    this.props.provider.getItemById(props.id).then((c: ICourse) => {
+    props.provider.getItemById(props.id).then((c: ICourse) => {
         refs.CourseID.current.value=c.CourseID.toString();
         refs.Title.current.value=c.Title;
         refs.Description.current.value=c.Description;
@@ -62,7 +62,7 @@ export function ModifyCourse(props: IModifyCourseProps) : JSX.Element {
                 // Validations come here
 
                 if(confirm("Update this Course?")) {
-                   this.props.provider.updateItem(props.id, {
+                   props.provider.updateItem(props.id, {
                         CourseID: parseInt(refs.CourseID.current.value),
                         Title:refs.Title.current.value,
                         Description: refs.Description.current.value,

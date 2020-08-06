@@ -192,7 +192,9 @@ export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoS
                 compact={ true }
               />
             </MarqueeSelection>
-            <Panel type={ PanelType.medium } isOpen={ this.state.showPane } onDismiss={ ()=> {
+            {
+
+            this.state.showPane && <Panel type={ PanelType.medium } isOpen={ this.state.showPane } onDismiss={ ()=> {
               this.setState({
                 showPane: false
               });
@@ -215,7 +217,7 @@ export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoS
                     />
               </div>
             </Panel>
-
+  }
               <div>
                 <Label>Selected Courses : ({ this.selections.getSelectedCount() })</Label>
                 {
