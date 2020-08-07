@@ -31,7 +31,7 @@ const control : IStackItemStyles = {
 }
 
 
-export default class StackDemo extends React.Component<any, any> {
+export default class NavDemo extends React.Component<any, any> {
 
     constructor(props: any) {
         super(props);
