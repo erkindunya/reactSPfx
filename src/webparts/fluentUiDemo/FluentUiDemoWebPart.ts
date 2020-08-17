@@ -9,7 +9,9 @@ import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 
 import * as strings from 'FluentUiDemoWebPartStrings';
 // import GridDemo from "./components/GridDemo";
-import StackDemo from "./components/StackDemo";
+// import StackDemo from "./components/StackDemo";
+
+import NavDemo from "./components/NavDemo";
 export interface IFluentUiDemoWebPartProps {
   description: string;
 }
@@ -18,7 +20,7 @@ export default class FluentUiDemoWebPart extends BaseClientSideWebPart <IFluentU
 
   public render(): void {
     const element = React.createElement(
-      StackDemo,
+      NavDemo,
       {
         context: this.context
       }

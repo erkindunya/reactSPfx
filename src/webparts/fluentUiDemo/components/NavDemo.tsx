@@ -1,35 +1,85 @@
 import * as React from 'react';
 import styles from './FluentUiDemo.module.scss';
 
-import { TextField, Stack, IStackTokens, IStackItemStyles, Fabric, IStackStyles  } from "office-ui-fabric-react";
+import { CommandBar, ICommandBarItemProps, Fabric  } from "office-ui-fabric-react";
 
-const stackStyles : IStackStyles = {
-    root: {
-        backgroundColor: "lightgreen",
-        padding: 10
+const moreItems : ICommandBarItemProps[] = [
+    {
+        key: 'convert',
+        text: 'Convert',
+        iconProps: {
+            iconName: 'Convert'
+        }
+    },
+    {
+        key: 'print',
+        text: 'Print',
+        iconProps: {
+            iconName: 'Print'
+        }
     }
-};
+];
 
-const itemStyles : IStackItemStyles = {
-    root: {
-        padding: 5,
-        borderColor: "black",
-        borderWidth: 1,
-        backgroundColor: "lightgray"
+
+const cmdItems : ICommandBarItemProps[] = [
+    {
+        key: 'new',
+        text: 'New',
+        iconProps: {
+            iconName: 'Add'
+        },
+        onclick: () => {
+            alert("You clicked New..");
+        }
+    },
+    {
+        key: 'edit',
+        text: 'Edit',
+        iconProps: {
+            iconName: 'Edit'
+        },
+        disabled: true
+    },
+    {
+        key: 'download',
+        text: 'Download',
+        iconProps: { 
+            iconName:'Download'
+        }
+    },
+    {
+        key: 'share',
+        text: 'Share',
+        iconProps: { 
+            iconName:'Share'
+        }
+    },
+    {
+        key: 'settings',
+        text: 'Settings',
+        iconProps: { 
+            iconName:'Settings'
+        },
+        subMenuProps:{
+            items:[
+                {
+                    key: 'options',
+                    text: 'Options...',
+                    iconProps: { 
+                        iconName:'Options'
+                    }
+                },
+                {
+                    key: 'about',
+                    text: 'About',
+                    iconProps: { 
+                        iconName:'About'
+                    }
+                }
+            ]
+        }
     }
-};
-
-const tokens : IStackTokens = {
-    childrenGap: 20
-};
-
-const control : IStackItemStyles = {
-    root: {
-        display: 'flex',
-        backgroundColor: "lightgreen"
-    }
-}
-
+];
 
 export default class NavDemo extends React.Component<any, any> {
 
@@ -40,33 +90,7 @@ export default class NavDemo extends React.Component<any, any> {
     public render(): JSX.Element {
         return (
             <Fabric>
-                <Stack styles={ stackStyles } tokens={ tokens }>
-                    <Stack.Item styles={ itemStyles }>
-                        <Stack  horizontal styles={{
-                            root: {
-                                padding: 5
-                            }
-                        }} tokens={{ 
-                            childrenGap: 10
-                        } as IStackTokens}>
-                            <Stack.Item styles={ control } grow={ 1 }>
-                                <TextField label="Name:" />
-                            </Stack.Item>
-                            <Stack.Item  styles={ control } grow={ 1 }>
-                                <TextField label="Email:" />
-                            </Stack.Item>
-                            <Stack.Item  styles={ control } grow={ 1 }>
-                                <TextField label="Phone:" />
-                            </Stack.Item>
-                        </Stack>
-                    </Stack.Item>
-                    <Stack.Item styles={ itemStyles }>
-                        <div> Row 2</div>
-                    </Stack.Item>
-                    <Stack.Item styles={ itemStyles }>
-                        <div> Row 3</div>
-                    </Stack.Item>
-                </Stack>
+                <CommandBar items={ cmdItems } overflowItems={ moreItems } />
             </Fabric>
         );
     }
