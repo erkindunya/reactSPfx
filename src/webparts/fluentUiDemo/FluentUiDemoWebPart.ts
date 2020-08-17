@@ -11,7 +11,8 @@ import * as strings from 'FluentUiDemoWebPartStrings';
 // import GridDemo from "./components/GridDemo";
 // import StackDemo from "./components/StackDemo";
 
-import NavDemo from "./components/NavDemo";
+// import NavDemo from "./components/NavDemo";
+import NavBarDemo from "./components/NavBarDemo";
 export interface IFluentUiDemoWebPartProps {
   description: string;
 }
@@ -20,7 +21,7 @@ export default class FluentUiDemoWebPart extends BaseClientSideWebPart <IFluentU
 
   public render(): void {
     const element = React.createElement(
-      NavDemo,
+      NavBarDemo,
       {
         context: this.context
       }
