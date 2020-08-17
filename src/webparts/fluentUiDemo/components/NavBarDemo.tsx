@@ -4,7 +4,7 @@ import { Nav, INavLink, INavLinkGroup,INavStyles, Fabric  } from "office-ui-fabr
 
 const styles : Partial<INavStyles> = {
     root: {
-        width:300,
+        width:225,
         height: 450,
         boxSizing:'border-box',
         border: '1px solid gray',
@@ -51,9 +51,21 @@ const links : INavLinkGroup[] = [
             {
                 name: 'Settings',
                 url:'#',
-                key:'key5',
-                isExpanded:true,
-                target:'_blank'
+                links: [
+                    {
+                        name: 'General',
+                        url: '#',
+                        key: 'key5',
+                        target: '_blank'
+                    },
+                    {
+                        name: 'About',
+                        url: '#',
+                        key: 'key6',
+                        target: '_blank'
+                    }
+                ],
+                isExpanded: true
             }           
         ]
     }
@@ -67,10 +79,12 @@ export default class NavBarDemo extends React.Component<any, any> {
 
     public render(): JSX.Element {
         return (
-            <Nav styles={ styles } groups={ links } selectedKey="key3"
+            <Nav styles={ styles } groups={ links }
                 onLinkClick={ (ev, item: INavLink) =>{
+                    ev.preventDefault();
+
                     if(item) {
-                        alert("You clicked: " + item.Name);
+                        alert("You clicked: " + item.name);
                     }
                 }} />
         );
