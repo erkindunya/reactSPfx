@@ -13,6 +13,7 @@ import * as strings from 'FluentUiDemoWebPartStrings';
 
 // import NavDemo from "./components/NavDemo";
 import NavBarDemo from "./components/NavBarDemo";
+import PivotDemo from "./components/PivotDemo";
 export interface IFluentUiDemoWebPartProps {
   description: string;
 }
@@ -21,7 +22,7 @@ export default class FluentUiDemoWebPart extends BaseClientSideWebPart <IFluentU
 
   public render(): void {
     const element = React.createElement(
-      NavBarDemo,
+      PivotDemo,
       {
         context: this.context
       }
