@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Pivot, PivotItem, Label  } from "office-ui-fabric-react";
+import { Pivot, PivotItem, PivotLinkSize, PivotLinkFormat, Label  } from "office-ui-fabric-react";
 
 export default class PivotDemo extends React.Component<any, any> {
 
@@ -10,7 +10,9 @@ export default class PivotDemo extends React.Component<any, any> {
 
     public render(): JSX.Element {
         return (
-            <Pivot>
+            <Pivot linkSize={ PivotLinkSize.large } linkFormat={ PivotLinkFormat.tabs } onClick={(ev)=> {
+                alert("You clicked a Tab");
+            }}>
                 <PivotItem headerText=" File ">
                     <Label>You Selected File</Label>
                 </PivotItem>
