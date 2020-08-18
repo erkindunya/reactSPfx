@@ -12,8 +12,10 @@ import * as strings from 'FluentUiDemoWebPartStrings';
 // import StackDemo from "./components/StackDemo";
 
 // import NavDemo from "./components/NavDemo";
-import NavBarDemo from "./components/NavBarDemo";
-import PivotDemo from "./components/PivotDemo";
+//import NavBarDemo from "./components/NavBarDemo";
+//import PivotDemo from "./components/PivotDemo";
+
+import TaxonomyDemo from "./components/taxonomydemo";
 export interface IFluentUiDemoWebPartProps {
   description: string;
 }
@@ -22,7 +24,7 @@ export default class FluentUiDemoWebPart extends BaseClientSideWebPart <IFluentU
 
   public render(): void {
     const element = React.createElement(
-      PivotDemo,
+      TaxonomyDemo,
       {
         context: this.context
       }
