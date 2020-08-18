@@ -10,7 +10,7 @@ export default class TaxonomyDemo extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
 
-        this.state={
+        this.state = {
             selectedTerms: []
         };
     }
@@ -21,7 +21,9 @@ export default class TaxonomyDemo extends React.Component<any, any> {
                 <TaxonomyPicker context={ this.props.context } label="Pick a Term:"
                     panelTitle="Select Term"
                     termsetNameOrID="Categories"
+                    isTermSetSelectable={ false }
                     allowMultipleSelections={ true }
+                    placeholder="Select Category"
                     onChange={ (terms: IPickerTerms) => {
                         let selTerms: string[] = [];
 
