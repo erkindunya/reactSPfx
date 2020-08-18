@@ -10,9 +10,9 @@ export default class TaxonomyDemo extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
 
-        this.setState({
+        this.state={
             selectedTerms: []
-        });
+        };
     }
 
     public render(): JSX.Element {
