@@ -15,7 +15,9 @@ import * as strings from 'FluentUiDemoWebPartStrings';
 //import NavBarDemo from "./components/NavBarDemo";
 //import PivotDemo from "./components/PivotDemo";
 
-import TaxonomyDemo from "./components/taxonomydemo";
+//import TaxonomyDemo from "./components/taxonomydemo";
+import MapDemo from "./components/MapDemo";
+
 export interface IFluentUiDemoWebPartProps {
   description: string;
 }
@@ -24,7 +26,7 @@ export default class FluentUiDemoWebPart extends BaseClientSideWebPart <IFluentU
 
   public render(): void {
     const element = React.createElement(
-      TaxonomyDemo,
+      MapDemo,
       {
         context: this.context
       }
